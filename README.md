@@ -8,7 +8,7 @@
 
 Cleanup memory core dumps from crashed processes
 
-Whenever process crashes or restarts unexpectedly DSM creates a memory dump of the memory the process was using for debugging. Unless you intend debugging why the process crashed you don't need to keep them. 
+Whenever a process crashes or restarts unexpectedly DSM creates a memory dump of the memory the process was using for debugging. Unless you intend debugging why the process crashed you don't need to keep them. 
 
 <p align="left">I found 92 coredump files (300MB), dating back to 2021 and DSM 6, on volume 1 of my Synology</p>
 <p align="left"><img src="/images/syno_cleanup_coredumps.png"></p>
