@@ -10,7 +10,7 @@ Cleanup memory core dumps from crashed processes
 
 Whenever a process crashes or restarts unexpectedly DSM creates a memory dump of the memory the process was using for debugging. Unless you intend debugging why the process crashed you don't need to keep them. 
 
-If you schedule the script to run in Task Schewduler with **Send run details by email** and **Send run details only when the script terminates abnormally** task scheduler will send you an email whenever the script deletes core dump files.
+If you schedule the script to run in Task Scheduler with **Send run details by email** and **Send run details only when the script terminates abnormally** task scheduler will send you an email whenever the script deletes core dump files.
 
 <p align="left">I found 92 coredump files (300MB), dating back to 2021 and DSM 6, on volume 1 of my Synology</p>
 <p align="left"><img src="/images/syno_cleanup_coredumps.png"></p>
