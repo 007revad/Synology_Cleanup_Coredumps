@@ -1,4 +1,11 @@
 # Synology Cleanup Coredumps
+
+<a href="https://github.com/007revad/Synology_Cleanup_Coredumps/releases"><img src="https://img.shields.io/github/release/007revad/Synology_Cleanup_Coredumps.svg"></a>
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2F007revad%2FSynology_Cleanup_Coredumps&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/007revad)
+
+### Description
+
 Cleanup memory core dumps from crashed processes
 
 Whenever process crashes or restarts unexpectedly DSM creates a memory dump of the memory the process was using for debugging. Unless you intend debugging why the process crashed you don't need to keep them. 
@@ -22,7 +29,7 @@ See <a href=how_to_schedule.md/>How to schedule a script in Synology Task Schedu
 You run the script in a shell with sudo -i or as root.
 
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredump.sh
+sudo -i /volume1/scripts/syno_clean_coredumps.sh
 ```
 
 **Note:** Replace /volume1/scripts/ with the path to where the script is located.
@@ -33,11 +40,11 @@ The script has an to set the age in days so that only coredumps older than that 
 
 You can use -a or --age followed by a space then the number of days.
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredump.sh -a 7
+sudo -i /volume1/scripts/syno_clean_coredumps.sh -a 7
 ```
 
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredump.sh --age 7
+sudo -i /volume1/scripts/syno_clean_coredumps.sh --age 7
 ```
 
 **Note:** Replace /volume1/scripts/ with the path to where the script is located.
