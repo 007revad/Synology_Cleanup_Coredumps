@@ -29,15 +29,16 @@ for volume in /volume*; do
         if [[ $age =~ [0-9]+ ]]; then
             # Delete core dumps older than $age
             echo "Deleting core dumps older than $age days on ${volume}"
-            find "$volume"/@*.core.gz -mtime +"$age" -delete
+            find "$volume"/@*.core* -mtime +"$age" -delete
         else
             # Delete all core dumps
             echo "Deleting all core dumps on ${volume}"
-            find "$volume"/@*.core.gz -delete
+            find "$volume"/@*.core* -delete
         fi
 
         # Inform of recent core dumps (those newer than $age)
-        for coredumps in "$volume"/@*.core.gz; do
+        #for coredumps in "$volume"/@*.core.gz; do
+        for coredumps in "$volume"/@*.core*; do
             if [[ $new != yes ]]; then
                 echo -e "\nRecent core dumps less than $age days old:" && new=yes
             fi
@@ -50,4 +51,5 @@ done
 if [[ $new == yes ]]; then
     exit 1
 fi
+
 
