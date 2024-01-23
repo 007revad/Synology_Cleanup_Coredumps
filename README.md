@@ -33,10 +33,10 @@ See <a href=how_to_schedule.md/>How to schedule a script in Synology Task Schedu
 
 [How to enable SSH and login to DSM via SSH](https://kb.synology.com/en-global/DSM/tutorial/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet)
 
-You run the script in a shell with sudo -i or as root.
+You run the script in a shell with sudo -s or as root.
 
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredumps.sh
+sudo -s /volume1/scripts/syno_clean_coredumps.sh
 ```
 
 **Note:** Replace /volume1/scripts/ with the path to where the script is located.
@@ -47,11 +47,11 @@ The script has an to set the age in days so that only coredumps older than that 
 
 You can use -a or --age followed by a space then the number of days.
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredumps.sh -a 7
+sudo -s /volume1/scripts/syno_clean_coredumps.sh -a 7
 ```
 
 ```YAML
-sudo -i /volume1/scripts/syno_clean_coredumps.sh --age 7
+sudo -s /volume1/scripts/syno_clean_coredumps.sh --age 7
 ```
 
 **Note:** Replace /volume1/scripts/ with the path to where the script is located.
