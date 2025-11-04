@@ -6,7 +6,20 @@
 #   -a #, --age #   where # is number of days
 #------------------------------------------------------------
 
-echo -e "Synology_cleanup_coredumps by github.com/007revad\n"
+scriptver="v1.1.3"
+script=Synology_Cleanup_Coredumps
+repo="007revad/Synology_Cleanup_Coredumps"
+scriptname=syno_cleanup_coredumps
+
+echo -e "Synology_cleanup_coredumps $scriptver by github.com/007revad\n"
+
+# Check script is running on a Synology NAS
+if ! /usr/bin/uname -a | grep -i synology >/dev/null; then
+    echo "This script is NOT running on a Synology NAS!"
+    echo "Copy the script to a folder on the Synology"
+    echo "and run it from there."
+    exit 1
+fi
 
 # Check for age option
 if [[ $1 ]]; then
@@ -24,28 +37,76 @@ if [[ $1 ]]; then
 fi
 
 # Check all /volume# volumes for @*.core.gz files
+shopt -s nullglob
 for volume in /volume*; do
     if [[ $volume =~ /volume[0-9]{1,2}$ ]] && [[ $volume != /volume0 ]]; then
-        if [[ $age =~ [0-9]+ ]]; then
-            # Delete core dumps older than $age
-            echo "Deleting core dumps older than $age days on ${volume}"
-            find "$volume"/@*.core* -mtime +"$age" -delete
-        else
-            # Delete all core dumps
-            echo "Deleting all core dumps on ${volume}"
-            find "$volume"/@*.core* -delete
+        new=""
+        # Check volume is not missing
+        if synostgvolume --get-device-path "$volume" >/dev/null 2>&1; then
+            if [[ $age =~ [0-9]+ ]]; then
+                # Delete core dumps older than $age
+                echo -e "Deleting core dumps older than $age days on ${volume}"
+                #find "$volume"/@*.core* -mtime +"$age" -delete
+
+                # Find and delete old .core files, then report how many and total size deleted
+                find "$volume"/@*.core* -mtime +"$age" -type f -printf '%s\n' 2>/dev/null \
+                | awk '{count++; sum+=$1} END {printf "%d %.0f\n", count, sum}' \
+                | {
+                    read -r count sum
+                    if [[ $count -gt 0 ]]; then
+                        # Delete the files
+                        find "$volume"/@*.core* -mtime +"$age" -type f -delete
+
+                        # Print summary
+                        total_mb=$(echo "$sum / 1024 / 1024" | bc -l)
+                        #printf "Deleted %d files (total %.2f MB) on %s\n\n" "$count" "$total_mb" "$volume"
+                        printf "Deleted %d files (total %.2f MB)\n\n" "$count" "$total_mb"
+                    else
+                        echo -e "No files to delete.\n"
+                    fi
+                }
+            else
+                # Delete all core dumps
+                echo -e "Deleting all core dumps on ${volume}"
+                #find "$volume"/@*.core* -delete
+
+                # Find and delete all .core files, then report how many and total size deleted
+                find "$volume"/@*.core* -type f -printf '%s\n' 2>/dev/null \
+                | awk '{count++; sum+=$1} END {printf "%d %.0f\n", count, sum}' \
+                | {
+                    read -r count sum
+                    if [[ $count -gt 0 ]]; then
+                        # Delete the files
+                        find "$volume"/@*.core* -type f -delete
+
+                        # Print summary
+                        total_mb=$(echo "$sum / 1024 / 1024" | bc -l)
+                        #printf "Deleted %d files (total %.2f MB) on %s\n\n" "$count" "$total_mb" "$volume"
+                        printf "Deleted %d files (total %.2f MB)\n\n" "$count" "$total_mb"
+                    else
+                        echo -e "No files to delete.\n"
+                    fi
+                }
+            fi
         fi
+        #echo ""
 
         # Inform of recent core dumps (those newer than $age)
-        #for coredumps in "$volume"/@*.core.gz; do
         for coredumps in "$volume"/@*.core*; do
-            if [[ $new != yes ]]; then
-                echo -e "\nRecent core dumps less than $age days old:" && new=yes
+            # Check volume is not missing
+            if synostgvolume --get-device-path "$volume" >/dev/null 2>&1; then
+                if [[ $age =~ [0-9]+ ]]; then
+                    if [[ -f "$coredumps" ]] && [[ $new != yes ]]; then
+                        echo -e "Recent core dumps less than $age days old:" && new=yes
+                    fi
+                    echo "$coredumps"
+                fi
             fi
-            echo "$coredumps"
-        done
+        done 2>/dev/null
+        if [[ $new == yes ]]; then echo ""; fi
     fi
 done
+shopt -u nullglob
 
 # Email if new core dumps found (if scheduled task set to email on errors)
 if [[ $new == yes ]]; then
