@@ -1,5 +1,5 @@
 v1.1.3
-- Now shows how many core dump files were deleted on each volume.
+- Now shows how many core dump files were deleted on each volume and the space recoverd.
 
 v1.0.2
 - Changed to delete non .gz core dumps as well.
