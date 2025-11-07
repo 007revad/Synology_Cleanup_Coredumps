@@ -1,5 +1,5 @@
 v1.2.4
-- Changed to not use bc for flaoting point math as DSM does not included bc.
+- Changed to not use bc for floating point math as DSM does not included bc.
 - Changed to check if running as sudo or root.
 - Refactored code.
 - Bug fix for deleting any file with `core` in its name even if it was in a sub folder. Issue #19
