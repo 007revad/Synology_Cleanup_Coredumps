@@ -17,8 +17,14 @@ If you schedule the script to run in Task Scheduler with **Send run details by e
 <p align="left">I found 92 coredump files (300MB), dating back to 2021 and DSM 6, on volume 1 of my Synology</p>
 <p align="left"><img src="/images/syno_cleanup_coredumps.png"></p>
 
+<!-- <p align="left">Output of the script</p>
+<p align="left"><img src="/images/Image-1.png"></p> -->
+
 <p align="left">Output of the script</p>
-<p align="left"><img src="/images/Image-1.png"></p>
+<p align="left"><img src="/images/default.png"></p>
+
+<p align="left">Output of the script with `--age 7` option</p>
+<p align="left"><img src="/images/age-option.png"></p>
 
 ### Download the script
 
